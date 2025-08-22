@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - WarrantyWallet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7648ec; /* Vibrant Pink */
+            --primary-hover: #8872f4;
+            --background-color: #111827; /* Dark Blue/Gray */
+            --card-color: rgba(31, 41, 55, 0.6);
+            --border-color: rgba(75, 85, 99, 0.5);
+            --text-light: #F9FAFB;
+            --text-dark: #9CA3AF;
+            --error-color: #3f4ef4;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* --- Main Page Layout --- */
+        .page-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* Give slightly more space to the form */
+            min-height: 100vh;
+        }
+
+        /* --- Info Panel (Left Side Graphic) --- */
+        .info-panel {
+            background: linear-gradient(rgba(17, 24, 39, 0.85), rgba(17, 24, 39, 0.85)), url('https://images.unsplash.com/photo-1587587133226-e1e5535319b3?q=80&w=1974&auto=format&fit=crop') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+        }
+        .info-panel .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        .info-panel .logo span { color: var(--primary-color); }
+        .info-panel h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .info-panel p {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            max-width: 400px;
+        }
+
+        /* --- Form Panel (Right Side) --- */
+        .form-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .auth-container {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .form-control { margin-bottom: 1.5rem; }
+        .form-control label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .form-control input {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: #111827;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-control input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px -5px var(--primary-color);
+        }
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px -5px var(--primary-color);
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-dark);
+        }
+        .toggle-link a {
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .toggle-link a:hover { text-decoration: underline; }
+
+        .message {
+            text-align: center; padding: 0.8rem;
+            margin-bottom: 1rem; border-radius: 8px;
+            display: none; font-weight: 500;
+        }
+        .message.error {
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        #signup-form { display: none; }
+
+        /* --- Responsive Design --- */
+        @media(max-width: 992px) {
+            .page-container {
+                grid-template-columns: 1fr;
+            }
+            .info-panel {
+                min-height: 50vh; /* Give it a fixed height */
+                text-align: center;
+                align-items: center;
+            }
+             .form-panel {
+                min-height: 50vh;
+                padding: 3rem 1rem;
+            }
+        }
+        
+         @media(max-width: 576px) {
+             .info-panel {
+                min-height: 40vh;
+                padding: 2rem;
+             }
+             .info-panel h1 {
+                 font-size: 2rem;
+             }
+             .auth-container {
+                 padding: 2rem 1.5rem;
+             }
+         }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Graphic Info Panel -->
+        <div class="info-panel">
+            <div class="logo">Warranty<span>Wallet</span></div>
+            <h1>Secure Your Warranties in One Place.</h1>
+            <p>Access your receipts, track expiry dates, and get reminders, all in one secure place. Join now and never lose proof of purchase again.</p>
+        </div>
+
+        <!-- Authentication Form Panel -->
+        <div class="form-panel">
+            <div class="auth-container">
+                <!-- Login Form -->
+                <div id="login-form">
+                    <h2>Login</h2>
+                    <form id="loginForm">
+                        <div id="login-message" class="message"></div>
+                        <div class="form-control">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-control">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                    <p class="toggle-link">Don't have an account? <a id="show-signup">Sign Up</a></p>
+                </div>
+
+                <!-- Signup Form -->
+                <div id="signup-form">
+                    <h2>Create Account</h2>
+                    <form id="signupForm">
+                        <div id="signup-message" class="message"></div>
+                        <div class="form-control">
+                            <label for="signup-username">Username</label>
+                            <input type="text" id="signup-username" required>
+                        </div>
+                        <div class="form-control">
+                            <label for="signup-email">Email</label>
+                            <input type="email" id="signup-email" required>
+                        </div>
+                        <div class="form-control">
+                            <label for="signup-password">Password (min. 6 characters)</label>
+                            <input type="password" id="signup-password" minlength="6" required>
+                        </div>
+                        <button type="submit" class="btn">Create Account</button>
+                    </form>
+                    <p class="toggle-link">Already have an account? <a id="show-login">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- NO CHANGES TO JAVASCRIPT ---
+        const API_URL = 'http://localhost:5000/api';
+        const loginFormContainer = document.getElementById('login-form');
+        const signupFormContainer = document.getElementById('signup-form');
+        const showSignupBtn = document.getElementById('show-signup');
+        const showLoginBtn = document.getElementById('show-login');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const loginMessage = document.getElementById('login-message');
+        const signupMessage = document.getElementById('signup-message');
+
+        showSignupBtn.addEventListener('click', () => {
+            loginFormContainer.style.display = 'none';
+            signupFormContainer.style.display = 'block';
+        });
+
+        showLoginBtn.addEventListener('click', () => {
+            signupFormContainer.style.display = 'none';
+            loginFormContainer.style.display = 'block';
+        });
+
+        const showMessage = (element, message, isError = true) => {
+            element.textContent = message;
+            element.className = 'message';
+            element.classList.add(isError ? 'error' : 'success');
+            element.style.display = 'block';
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                const res = await fetch(`${API_URL}/users/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.message || 'Failed to login');
+                }
+                localStorage.setItem('warrantyWalletToken', data.token);
+                localStorage.setItem('warrantyWalletUser', data.username);
+                window.location.href = '/dashboard.html';
+            } catch (err) {
+                showMessage(loginMessage, err.message);
+            }
+        });
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            try {
+                const res = await fetch(`${API_URL}/users/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.message || 'Failed to sign up');
+                }
+                localStorage.setItem('warrantyWalletToken', data.token);
+                localStorage.setItem('warrantyWalletUser', data.username);
+                window.location.href = '/dashboard.html';
+            } catch (err) {
+                showMessage(signupMessage, err.message);
+            }
+        });
+    </script>
+</body>
+</html>

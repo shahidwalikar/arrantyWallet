@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WarrantyWallet - Track Your Warranties, Effortlessly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark-start: #0D0D0D;
+            --bg-dark-end: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --accent-start: #3B82F6;
+            --accent-end: #60A5FA;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.7;
+            background-image: linear-gradient(180deg, var(--bg-dark-start), var(--bg-dark-end));
+            color: var(--text-secondary);
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .navbar.scrolled {
+            background-color: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .navbar .logo span {
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-image: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+            color: var(--text-primary);
+            box-shadow: 0 5px 20px -5px rgba(59, 130, 246, 0.5);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px -5px rgba(96, 165, 250, 0.6);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding-top: 12rem;
+            padding-bottom: 10rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Features Section (How It Works) --- */
+        .features {
+            padding: 6rem 0;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.05), 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+        .icon-wrapper svg {
+            width: 36px;
+            height: 36px;
+            color: var(--accent-end);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-preview {
+            background: #0D0D0D;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            opacity: 0.7;
+        }
+        .dashboard-preview .item {
+            background: var(--glass-border);
+            border-radius: 4px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            padding-left: 0.5rem;
+        }
+        .dashboard-preview .item-bar {
+            background: var(--accent-start);
+            height: 10px;
+            border-radius: 2px;
+            width: 60%;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 4rem 0 2rem 0;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* --- Responsive Design --- */
+        @media(max-width: 992px) {
+            .hero h1 { font-size: 3.5rem; }
+        }
+        @media(max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero { padding-top: 10rem; padding-bottom: 6rem; }
+            .features { padding: 4rem 0; }
+            .navbar .nav-links a:not(.btn) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="container">
+                <a href="/" class="logo">Warranty<span>Wallet</span></a>
+                <div class="nav-links">
+                    <a href="/auth.html" class="btn btn-primary" click="get started">Get Started</a>
+                     <a href="/dashboard.html" class="btn btn-primary" click="Dashboard">Get Started</a>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Track Your Warranties, <span class="highlight">Effortlessly.</span></h1>
+                <p>The minimal, elegant solution to store your receipts, track expiry dates, and get timely reminders. Never lose proof of purchase again.</p>
+                <a href="/auth.html" class="btn btn-primary">Start for Free</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <!-- Feature 1: Upload -->
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" viewBox="0 0 256 256"><path d="M208,88H152a8,8,0,0,1-8-8V24a8,8,0,0,0-8-8H56A16,16,0,0,0,40,32V224a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V96A8,8,0,0,0,208,88ZM160,88V45.66L202.34,88ZM200,224H56V32h80V88a16,16,0,0,0,16,16h48Z"></path></svg>
+                        </div>
+                        <h3>Upload Your Item</h3>
+                        <p>Snap a photo of your receipt, add key details, and let our system handle the rest. Your warranty is stored securely in seconds.</p>
+                    </div>
+
+                    <!-- Feature 2: Track -->
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" viewBox="0 0 256 256"><path d="M232,88.42a8,8,0,0,0-9.62-7.14L136,101.69V40a8,8,0,0,0-16,0v61.69L33.62,81.28A8,8,0,0,0,24,88.42V168a8,8,0,0,0,12.55,6.58L128,121.16l91.45,53.42A8,8,0,0,0,232,168ZM40,160.58V100.34l88-51.33,88,51.33v60.24l-88-51.34Z"></path></svg>
+                        </div>
+                        <h3>Track Everything</h3>
+                        <p>View all your items in a clean, minimal dashboard. Our intuitive interface shows you what's active and what's expiring soon.</p>
+                        <div class="dashboard-preview">
+                            <div class="item"><div class="item-bar" style="width: 80%; background: var(--accent-end)"></div></div>
+                            <div class="item"><div class="item-bar" style="width: 40%;"></div></div>
+                            <div class="item"><div class="item-bar" style="width: 65%; background: #FBBF24;"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3: Reminders -->
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" viewBox="0 0 256 256"><path d="M224,48H184V24a8,8,0,0,0-16,0V48H88V24a8,8,0,0,0-16,0V48H32A16,16,0,0,0,16,64V208a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM32,64H72V80a8,8,0,0,0,16,0V64h80V80a8,8,0,0,0,16,0V64h40V96H32ZM224,208H32V112H224Z"></path></svg>
+                        </div>
+                        <h3>Get Reminders</h3>
+                        <p>Receive an automatic email notification before a warranty expires, giving you ample time to make a claim if needed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 WarrantyWallet. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- particles.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <script>
+        // --- NO BACKEND CHANGES: This script is only for the frontend ---
+
+        // 1. Redirect if already logged in
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const token = localStorage.getItem('warrantyWalletToken');
+        //     if (token) {
+        //         window.location.href = '/dashboard.html';
+        //     }
+        // });
+
+        // 2. Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 3. particles.js configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 50,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#3B82F6"
+                },
+                "shape": {
+                    "type": "circle",
+                },
+                "opacity": {
+                    "value": 0.3,
+                    "random": true,
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3B82F6",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": false,
+                    },
+                    "resize": true
+                },
+                 "modes": {
+                    "grab": {
+                      "distance": 140,
+                      "line_opacity": 0.5
+                    },
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+
+</body>
+</html>
