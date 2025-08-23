@@ -7,37 +7,65 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const { sendExpirationReminders } = require('./services/reminderService');
-const app = express();
-// Load environment variables
+
+// Load environment variables right at the beginning
 dotenv.config();
+
+const app = express();
 
 // Connect to the database
 connectDB();
-app.path()
 
-app.use(express.static(path.join(__dirname, '../client'))); // Serve static files from 'public' directory
-// Middleware
+// --- BEST PRACTICE CORS CONFIGURATION ---
+// This should be one of the first middleware your app uses.
+const allowedOrigins = [
+  'https://warrantywallet.onrender.com'
+  // You can add your local frontend URL here for testing if needed
+];
+
 const corsOptions = {
-  origin: 'https://warrantywallet.onrender.com', // Your frontend's URL
-  optionsSuccessStatus: 200 // For legacy browser support
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
+// --- END OF CORS CONFIGURATION ---
+
+
+// --- MIDDLEWARE ---
+// IMPORTANT: Middleware order matters! Body parsers should come after CORS.
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies
 
-// API Routes
+
+// --- API ROUTES ---
+// Your API routes are defined here.
 app.use('/api/users', authRoutes);
 app.use('/api/items', itemRoutes);
 
-// Scheduled Task for Reminders (runs every day at 8:00 AM)
+
+// --- SERVE STATIC FILES (FRONTEND) ---
+// This serves your client-side files.
+app.use(express.static(path.join(__dirname, '../client')));
+
+
+// --- SCHEDULED TASKS ---
+// This remains unchanged.
 cron.schedule('0 8 * * *', () => {
   console.log('Running daily check for warranty expirations...');
   sendExpirationReminders();
 });
 
+
+// --- SERVER INITIALIZATION ---
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => 
-    console.log(`Server running on port ${PORT}`),
-    console.log(`http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
