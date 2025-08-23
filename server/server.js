@@ -17,7 +17,11 @@ app.path()
 
 app.use(express.static(path.join(__dirname, '../client'))); // Serve static files from 'public' directory
 // Middleware
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+const corsOptions = {
+  origin: 'https://warrantywallet.onrender.com', // Your frontend's URL
+  optionsSuccessStatus: 200 // For legacy browser support
+};
+app.use(cors(corsOptions));
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies
 
